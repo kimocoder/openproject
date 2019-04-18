@@ -6,7 +6,7 @@
   <span class="button--text" [textContent]="filterButtonText"></span>
 </button>
 
-<div class="work-packages--filters-optional-container" [hidden]="!visible">
+<div class="work-packages--filters-optional-container" *ngIf="visible">
   <div id="query_form_content" class="hide-when-print">
     <query-filters *ngIf="!!filters"
                    [filters]="filters"
