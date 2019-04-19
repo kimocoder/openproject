@@ -28,11 +28,8 @@
 
 require 'spec_helper'
 
-describe WikiMenuItemsController, type: :controller do
+describe WikiMenuItemsController, :with_clean_fixture, type: :controller do
   before do
-    User.delete_all
-    Role.delete_all
-
     @project = FactoryBot.create(:project)
     @project.reload # project contains wiki by default
 
@@ -43,12 +40,12 @@ describe WikiMenuItemsController, type: :controller do
   end
 
   describe 'w/ valid auth' do
-    it 'renders the edit action' do
-      admin_user = FactoryBot.create(:admin)
+    using_shared_fixtures :admin
 
-      allow(User).to receive(:current).and_return admin_user
+    it 'renders the edit action' do
+      allow(User).to receive(:current).and_return admin
       permission_role = FactoryBot.create(:role, name: 'accessgranted', permissions: [:manage_wiki_menu])
-      member = FactoryBot.create(:member, principal: admin_user, user: admin_user, project: @project, roles: [permission_role])
+      member = FactoryBot.create(:member, principal: admin, user: admin, project: @project, roles: [permission_role])
 
       get 'edit', params: @params
 
